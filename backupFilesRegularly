@@ -1,0 +1,25 @@
+[TIP] Ubuntu 파일 백업하기
+
+DATA 백업
+tar -czpf (저장될 디렉터리)/(저장할 이름)`date +%Y%m%d%H%M%S`.tgz (백업할 디렉터리) 1>/dev/null 2>/dev/null
+e.g)
+tar -czpf /HDD3/backup/DATA/cloud_DATA_`date +%Y%m%d%H%M%S`.tgz /HDD1 1>/dev/null 2>/dev/null
+
+자동 삭제
+find (백업 디렉터리) -type f -mtime +10 | sort | xargs rm -f
+
+자동 백업
+# cd /root
+# nano backup.sh
+
+#!/bin/bash
+tar -czpf (저장될 디렉터리)/(저장할 이름)`date +%Y%m%d%H%M%S`.tgz (백업할 디렉터리) 1>/dev/null 2>/dev/null
+find (백업 디렉터리) -type f -mtime +10 | sort | xargs rm -f
+
+  실행 권한
+# chmod 700 backup.sh
+
+  자동 실행
+# crontab -e
+아래 구문 추가
+0 4 * * * /root/backup.sh 1>/dev/null 2>/dev/null
